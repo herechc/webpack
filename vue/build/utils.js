@@ -1,22 +1,29 @@
 'use strict'
 const path = require('path')
 const config = require('../config')
+// 引入extract-text-webpack-plugin插件，用来将css提取到单独的css文件中
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const pkg = require('../package.json')
 
 exports.assetsPath = function (_path) {
+  // 如果是生产环境assetsSubDirectory就是'static'，否则还是'static'
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
     ? config.build.assetsSubDirectory
     : config.dev.assetsSubDirectory
+    // path.join和path.posix.join的区别就是，前者返回的是完整的路径，后者返回的是完整路径的相对根路径
+    // 也就是说path.join的路径是C:a/a/b/xiangmu/b，那么path.posix.join就是b
   return path.posix.join(assetsSubDirectory, _path)
+  // 所以这个方法的作用就是返回一个干净的相对根路径
 }
 
 exports.cssLoaders = function (options) {
   options = options || {}
-
+// cssLoader的基本配置
   const cssLoader = {
     loader: 'css-loader',
     options: {
+      // options是用来传递参数给loader的
+      // minimize表示压缩，如果是生产环境就压缩css代码
       sourceMap: options.sourceMap
     }
   }

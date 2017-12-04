@@ -76,9 +76,14 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        // 对图片相关的文件使用 url-loader 插件，这个插件的作用是将一个足够小的文件生成一个64位的DataURL
+        // 可能有些老铁还不知道 DataURL 是啥，当一个图片足够小，为了避免单独请求可以把图片的二进制代码变成64位的
+        // DataURL，使用src加载，也就是把图片当成一串代码，避免请求，神不神奇？？
         loader: 'url-loader',
         options: {
+          // 限制 10000 个字节一下的图片才使用DataURL
           limit: 10000,
+           // 下面这个应该是指将[name].[hash:7].[ext]对应的图片使用url-loader测试吧
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
@@ -92,6 +97,7 @@ module.exports = {
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        // 字体文件处理，和上面一样
         loader: 'url-loader',
         options: {
           limit: 10000,
